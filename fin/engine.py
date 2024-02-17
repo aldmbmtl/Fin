@@ -4,6 +4,7 @@
 
 # std
 import os
+from pathlib import Path
 
 # 3rd
 from halo import Halo
@@ -11,6 +12,7 @@ from rich.table import Table
 from rich.console import Console
 from rich.padding import Padding
 from rich.markdown import Markdown
+from rich.progress import track
 from langchain.chains import ConversationChain
 from langchain.chains.conversation.memory import ConversationBufferMemory
 
@@ -80,10 +82,10 @@ class Engine:
         the behavior of the conversation chain, but rather sets up some initial settings
         that can be referenced later.
         """
-        # with Halo(text='Setting expectations...', spinner='dots'):
-        #     self.conversation.invoke(
-        #         "Keep all responses as short as possible."
-        #     )
+        with Halo(text='Setting expectations...', spinner='dots'):
+            self.conversation.invoke(
+                "Keep all responses as short as possible."
+            )
 
     def specify_project_languages(self):
         """
@@ -101,17 +103,30 @@ class Engine:
         Handles file references in the prompt and generates chain prompts for them.
         """
         tokens = prompt.split(" ")
+        paths = []
         for part in tokens:
             if not os.path.exists(part):
                 continue
             if part in self.loaded_files:
                 continue
 
-            code = open(part, "r").read()
-            with Halo(text=f"Loading {part}...", spinner="dots"):
-                # noinspection PyTypeChecker
-                self.conversation.invoke(f"This code lives in {part} {code}")
+            if os.path.isdir(part):
+                for dirpath, _, filenames in os.walk(part):
+                    if "__pycache__" in dirpath:
+                        continue
+                    for filename in filenames:
+                        paths.append(dirpath + "/" + filename)
                 self.loaded_files.append(part)
+            else:
+                paths.append(part)
+
+        if paths:
+            for path in track(paths, description="Loading files"):
+                code = open(path, "r").read()
+                self.conversation.invoke(
+                    f"This code lives in {path} {code} and belongs to the fin package"
+                )
+                self.loaded_files.append(path)
 
     def prompt(self, prompt: str):
         """
