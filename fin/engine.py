@@ -27,7 +27,15 @@ class Engine:
 
     def __init__(self, console: Console):
         """
-        Initializes the engine.
+        initializes the engine.
+
+        this method sets up the llm (language learning model) object from `get_ollama()`
+        and retrieves the configuration settings from `load_config()`. It also initializes
+        the conversation object and loads any necessary files for reference during the
+        conversation.
+
+        note that project languages are specified here, which allows them to be referenced
+        later in the conversation chain.
         """
         self.llm = get_ollama()
         self.console = console
@@ -68,7 +76,9 @@ class Engine:
 
     def prepare_conversation(self):
         """
-        Prepares the conversation chain.
+        prepares the conversation object for use in the engine. This method does not change
+        the behavior of the conversation chain, but rather sets up some initial settings
+        that can be referenced later.
         """
         # with Halo(text='Setting expectations...', spinner='dots'):
         #     self.conversation.invoke(

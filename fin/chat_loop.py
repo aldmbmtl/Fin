@@ -53,13 +53,13 @@ def start_loop():
 
                 console.print(f"Loaded Files: {engine.loaded_files}")
                 target = Prompt.ask("Save to")
+                generated = renders[int(selection)]["code"]
+                new = generated.strip().splitlines()
 
                 if os.path.exists(target):
                     with open(target, "r") as f:
                         existing = f.read()
                     original = existing.strip().splitlines()
-                    generated = renders[int(selection)]["code"]
-                    new = generated.strip().splitlines()
 
                     for line in difflib.unified_diff(
                         original,
@@ -69,11 +69,12 @@ def start_loop():
                         lineterm="",
                     ):
                         console.print(line)
-                        confirm = Prompt.ask("Save?")
-                        if confirm == "yes":
-                            with open(target, "w") as f:
-                                f.write(generated)
-                            break
+
+                confirm = Prompt.ask("Save?")
+                if confirm == "yes":
+                    with open(target, "w") as f:
+                        f.write(generated)
+                    break
 
                 continue
 
