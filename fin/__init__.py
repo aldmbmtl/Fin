@@ -1,1 +1,3 @@
-from . import config_handler, connector, chat_loop
+from .chat_loop import start_loop
+
+start_loop()

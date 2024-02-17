@@ -19,8 +19,11 @@ install:
 	@$(PIP) install -r requirements/dev.txt
 	@$(PIP) install -r requirements/prod.txt
 
+format:
+	@$(ACTIVATE) ruff format fin
+
 lint:
-	@$(ACTIVATE) ruff
+	@$(ACTIVATE) ruff check fin --fix
 
 run:
 	@$(PYTHON) run.py

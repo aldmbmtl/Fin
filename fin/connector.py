@@ -22,11 +22,11 @@ def get_ollama() -> Ollama:
         return LLM
 
     config = load_config()
-    llm_config = config['llm']
+    llm_config = config["llm"]
 
-    LLM = Ollama(model=llm_config['model'])
+    LLM = Ollama(model=llm_config["model"])
 
     # this is a hack since it seems the base_url doesn't seem to be settable from the constructor
-    LLM.base_url = llm_config['server']
+    LLM.base_url = llm_config["server"]
 
     return LLM
