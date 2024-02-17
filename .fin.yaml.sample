@@ -1,0 +1,7 @@
+llm:
+  server:
+  model:
+
+project:
+  languages:
+    - python
