@@ -5,21 +5,52 @@ This module contains a function named `start_loop()` that starts the main chat l
 
 The main engine responsible for code rendering, loading, and saving is accessed via the `Engine` class defined in `engine.py`.
 """
+# std
+import sys
 import os
 import difflib
-from .engine import Engine
+
+# 3rd
 from rich.console import Console
 from rich.prompt import Prompt
 
+# local
+from .engine import Engine
+
+
+def start_up():
+    """
+    Decides if we should enter a loop or not.
+    """
+    if len(sys.argv) > 1:
+        prompt = ' '.join(sys.argv[1:])
+        direct_input(prompt)
+    else:
+        start_loop()
+
+
+def direct_input(prompt: str = None):
+    """
+    If an argument is provided, the bot will process the input and return the result.
+    """
+    console = Console()
+    engine = Engine(console)
+    try:
+        engine.prompt(prompt)
+    except (KeyboardInterrupt, EOFError):
+        return 0
+
 
 def start_loop():
-    """Starts the chat loop for the bot."""
+    """
+    Starts the chat loop for the bot.
+    """
     console = Console()
     engine = Engine(console)
 
     try:
         while True:
-            user_input = Prompt.ask("")
+            user_input = Prompt.ask("Fin>")
 
             if user_input == "exit":
                 break

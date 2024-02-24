@@ -5,9 +5,6 @@ PYTHON = $(ACTIVATE) python
 PIP = $(ACTIVATE) uv pip
 COMPILE = $(ACTIVATE) uv pip compile
 
-clean:
-	@rm -rfv .venv
-
 setup:
 	@uv venv -p $(PYTHON_VERSION)
 
@@ -34,3 +31,6 @@ cli:
 
 install-cli: cli
 	@mv -v ./dist/fin $(HOME)/.local/bin/fin
+
+clean:
+	@rm -rfv build dist fin.spec

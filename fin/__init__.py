@@ -1,3 +1,3 @@
-from .chat_loop import start_loop
+from .chat_loop import start_up
 
-start_loop()
+start_up()
