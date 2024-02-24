@@ -27,3 +27,10 @@ lint:
 
 run:
 	@$(PYTHON) run.py
+
+cli:
+	@$(BIN)/pyinstaller ./run.py --name fin --onefile -w --clean
+	@chmod +x ./dist/fin
+
+install-cli: cli
+	@mv -v ./dist/fin $(HOME)/.local/bin/fin

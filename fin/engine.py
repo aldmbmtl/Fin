@@ -1,10 +1,9 @@
 """
-
+Primary handler class to interact with the Ollama API and manage the conversation chain.
 """
 
 # std
 import os
-from pathlib import Path
 
 # 3rd
 from halo import Halo
@@ -82,10 +81,8 @@ class Engine:
         the behavior of the conversation chain, but rather sets up some initial settings
         that can be referenced later.
         """
-        with Halo(text='Setting expectations...', spinner='dots'):
-            self.conversation.invoke(
-                "Keep all responses as short as possible."
-            )
+        with Halo(text="Setting expectations...", spinner="dots"):
+            self.conversation.invoke("Keep all responses as short as possible.")
 
     def specify_project_languages(self):
         """
